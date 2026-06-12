@@ -1,0 +1,62 @@
+.services-page-wrapper {
+  padding: 24px;
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
+.services-main-header {
+  background: #ffffff;
+  padding: 20px 24px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+  border: 1px solid #e2e8f0;
+}
+
+.services-title {
+  margin: 0 !important;
+  color: #004D40 !important;
+  font-weight: 700 !important;
+}
+
+.services-stats-row {
+  margin-bottom: 24px !important;
+}
+
+.service-stat-card,
+.services-table-card {
+  background: #ffffff !important;
+  border-radius: 12px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01) !important;
+}
+
+.services-table-card { padding: 12px; }
+
+.service-thumb    { border-radius: 6px; object-fit: cover; }
+.service-name-text { color: #004D40; }
+.doctor-name-text  { font-weight: 500; }
+.fee-text          { color: #004D40; }
+.locked-text       { font-size: 12px; font-style: italic; }
+
+.approve-btn {
+  background-color: #00897B !important;
+  border-color: #00897B !important;
+}
+
+.approve-btn:hover {
+  background-color: #004D40 !important;
+  border-color: #004D40 !important;
+}
+
+.pay-auth-tag,
+.status-tag {
+  font-weight: 600 !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+}
+
+.stat-icon-blue   { color: #0284c7; }
+.stat-icon-yellow { color: #eab308; }
+.stat-icon-green  { color: #22c55e; }
+.stat-icon-teal   { color: #004D40; }

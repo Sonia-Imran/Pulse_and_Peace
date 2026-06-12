@@ -1,0 +1,116 @@
+.patients-container {
+  padding: 24px;
+  background-color: #f5f6fa;
+  min-height: 85vh;
+}
+
+.patients-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.page-top-header {
+  background: #ffffff;
+  padding: 20px 24px;
+  border-radius: 14px;
+  border: 1px solid #e1f5ee;
+  box-shadow: 0 2px 8px rgba(15, 110, 86, 0.05);
+}
+
+.page-top-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #085041;
+  margin: 0 0 4px;
+}
+
+.page-top-sub {
+  color: #7ab5a5;
+  margin: 0;
+  font-size: 13px;
+}
+
+.search-filter-section {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.table-container {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.patient-info-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.patient-avatar-text {
+  width: 40px;
+  height: 40px;
+  background-color: #e6f7ff;
+  color: #1890ff;
+  font-weight: 600;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.patient-meta-name {
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+.patient-meta-sub {
+  font-size: 12px;
+  color: #7f8c8d;
+  margin: 0;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #f8fafc !important;
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+
+.modal-section-title {
+  font-size: 16px;
+  color: #1c1c1c;
+  margin: 20px 0 12px 0;
+  border-left: 4px solid #1890ff;
+  padding-left: 8px;
+}
+.prescription-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.prescription-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.prescription-date {
+  font-weight: 600;
+  color: #475569;
+}
+.prescription-diag {
+  color: #ef4444;
+  font-weight: 550;
+}
+.meds-list {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+  color: #334155;
+}

@@ -1,0 +1,593 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+a {
+  text-decoration: none;
+}
+
+.ticker-bar {
+  background-color: #f0f7f9;
+  border-bottom: 1px solid #c8e4ed;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 7px 0;
+}
+
+.ticker-content {
+  display: inline-block;
+  animation: marquee 22s linear infinite;
+  color: #104155;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+header {
+  display: flex;
+  background-color: #104155;
+  width: 100%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  transition:
+    background-color 0.4s,
+    box-shadow 0.4s;
+  padding: 0.35rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 998;
+}
+
+.container {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  position: relative;
+}
+
+.logo-text {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  cursor: pointer;
+}
+
+.logoimg {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 50px;
+}
+
+.logo-text h2 {
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-left: 1rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.nav-link li {
+  margin: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.nav-link li a {
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 0.7rem 1rem;
+  display: block;
+  border-radius: 10px;
+}
+
+.nav-link li a:hover {
+  color: #c5f133;
+}
+
+.auth-item {
+  margin-left: 0.5rem;
+  position: relative;
+}
+
+.auth-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 20px;
+  border-radius: 7px;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  color: #fff;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+.login-btn:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.signup-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 20px;
+  border-radius: 7px;
+  border: 1.5px solid #fff;
+  background: transparent;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.signup-btn:hover {
+  background: #fff;
+  color: #104155;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Bell & Calendar buttons ── */
+.notif-wrap,
+.appt-wrap {
+  position: relative;
+}
+
+.notif-btn,
+.appt-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.notif-btn:hover,
+.appt-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.notif-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #104155;
+}
+
+.pay-badge {
+  background: #f59e0b;
+}
+
+/* ── Dropdown Panel ── */
+.notif-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.15);
+  width: 320px;
+  z-index: 999;
+  overflow: hidden;
+  animation: fadeDown 0.15s ease;
+}
+
+.appt-dropdown {
+  width: 340px;
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notif-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid #f0f7f9;
+}
+
+.notif-dropdown-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #104155;
+}
+
+.notif-mark-all {
+  font-size: 11px;
+  font-weight: 600;
+  color: #0d9488;
+  background: #f0fdfa;
+  border: 1px solid #99f6e4;
+  border-radius: 20px;
+  padding: 2px 10px;
+  cursor: pointer;
+}
+
+.notif-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.notif-empty {
+  text-align: center;
+  padding: 24px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* Notification items */
+.notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f9fafb;
+  transition: background 0.15s;
+}
+.notif-item:hover {
+  background: #f0f7f9;
+}
+.notif-item.unread {
+  background: #f7fffe;
+}
+
+.notif-status-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.notif-status-icon.accepted {
+  color: #16a34a;
+}
+.notif-status-icon.rejected {
+  color: #dc2626;
+}
+.notif-status-icon.pending {
+  color: #d97706;
+}
+
+.notif-item-body {
+  flex: 1;
+}
+.notif-item-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #104155;
+  margin: 0 0 3px;
+}
+.notif-item-msg {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0 0 3px;
+  line-height: 1.4;
+}
+.notif-item-time {
+  font-size: 11px;
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* Appointment items */
+.appt-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f9fafb;
+  gap: 10px;
+  transition: background 0.15s;
+}
+.appt-item:hover {
+  background: #f0f7f9;
+}
+
+.appt-item-left {
+  flex: 1;
+}
+.appt-item-type {
+  font-size: 13px;
+  font-weight: 600;
+  color: #104155;
+  margin: 0 0 3px;
+}
+.appt-item-date {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0 0 6px;
+}
+.appt-item-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.appt-status-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: capitalize;
+}
+.appt-status-accepted {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+.appt-status-pending {
+  background: #fffbeb;
+  color: #d97706;
+}
+.appt-status-rejected {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.appt-pay-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.appt-pay-paid {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+.appt-pay-unpaid {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.appt-pay-btn {
+  background: #d97706;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.appt-pay-btn:hover {
+  background: #b45309;
+}
+
+.appt-chat-btn {
+  background: #0d9488;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.appt-chat-btn:hover {
+  background: #0f766e;
+}
+
+/* Profile */
+.logged-in-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.profile-trigger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.avatar-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid #c5f133;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0d3547;
+}
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.avatar-initials {
+  color: #c5f133;
+  font-size: 15px;
+  font-weight: 700;
+}
+.user-name-text {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+.chevron-icon {
+  color: #c5f133;
+  transition: transform 0.2s;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  min-width: 180px;
+  z-index: 100;
+  overflow: hidden;
+  animation: fadeDown 0.15s ease;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 16px;
+  font-size: 14px;
+  color: #104155;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.dropdown-item:hover {
+  background: #f0f7f9;
+}
+.dropdown-item.danger {
+  color: #d9363e;
+}
+.dropdown-item.danger:hover {
+  background: #fff1f0;
+}
+.dropdown-divider {
+  height: 1px;
+  background: #eee;
+  margin: 2px 0;
+}
+
+.icon {
+  display: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .icon {
+    display: block;
+  }
+
+  .nav-link {
+    flex-direction: column;
+    justify-content: space-evenly;
+    background-color: #104155;
+    position: absolute;
+    width: 350px;
+    min-height: 60vh;
+    height: auto;
+    top: -800px;
+    right: 0;
+    z-index: 10;
+    padding: 1rem 0;
+  }
+
+  .nav-link.active {
+    top: 15%;
+    transition: all 0.7s ease-in;
+  }
+
+  .auth-item {
+    margin-left: 0;
+    margin-top: 0.5rem;
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  .auth-btns {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .login-btn,
+  .signup-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .notif-dropdown,
+  .appt-dropdown {
+    right: auto;
+    left: 0;
+    width: 290px;
+  }
+
+  .profile-dropdown {
+    right: auto;
+    left: 0;
+  }
+
+  .header-right {
+    gap: 4px;
+  }
+}

@@ -1,0 +1,77 @@
+ .why_section {
+    padding: 60px 20px;
+    background-color: #f9fbff;
+    text-align: center;
+}
+
+.why_header {
+    margin-bottom: 40px;
+}
+
+.why_title {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.brand_name {
+    color: #7ab317; 
+}
+
+.why_subtitle {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.why_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.why_card {
+    background: #ffffff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.why_card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.why_image_box {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.reason_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.why_card_footer {
+    padding: 15px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.why_card_title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #34495e;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .why_title {
+        font-size: 2rem;
+    }
+}

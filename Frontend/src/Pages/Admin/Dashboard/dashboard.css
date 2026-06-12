@@ -1,0 +1,219 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
+
+.ad-wrapper {
+  font-family: "DM Sans", sans-serif;
+  padding: 24px;
+  background: #f0faf7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ad-welcome-banner {
+  background: linear-gradient(135deg, #085041, #1d9e75);
+  border-radius: 16px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(8, 80, 65, 0.18);
+}
+
+.ad-welcome-title {
+  color: #ffffff !important;
+  margin: 0 !important;
+  font-weight: 700 !important;
+  font-size: 22px !important;
+}
+
+.ad-welcome-sub {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  margin-top: 4px;
+  display: block;
+}
+
+.ad-add-btn {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+  height: 38px !important;
+  padding: 0 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  transition: background 0.2s !important;
+}
+
+.ad-add-btn:hover {
+  background: rgba(255, 255, 255, 0.28) !important;
+}
+
+.ad-stats-row {
+  margin: 0 !important;
+}
+
+.ad-stat-card {
+  border-radius: 14px !important;
+  border: 1.5px solid #c8ede3 !important;
+  box-shadow: 0 2px 10px rgba(8, 80, 65, 0.07) !important;
+  overflow: hidden;
+  transition: transform 0.2s;
+  position: relative;
+  padding-top: 8px !important;
+}
+
+.ad-stat-card:hover {
+  transform: translateY(-3px);
+}
+
+.ad-stat-card .ant-card-body {
+  padding: 18px 20px 16px !important;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ad-stat-icon-wrap {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.ad-icon-teal   { background: #e1f5ee; color: #1d9e75; }
+.ad-icon-green  { background: #d1fae5; color: #085041; }
+.ad-icon-blue   { background: #e8f0fb; color: #1a6bb5; }
+.ad-icon-orange { background: #fff4e8; color: #d97706; }
+
+.ad-stat-teal   { background: #ffffff; }
+.ad-stat-green  { background: #ffffff; }
+.ad-stat-blue   { background: #ffffff; }
+.ad-stat-orange { background: #ffffff; }
+
+.ad-stat-card .ant-statistic-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #7ab5a5;
+  margin-bottom: 4px;
+}
+
+.ad-stat-card .ant-statistic-content-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #085041;
+}
+
+.ad-bottom-row {
+  margin: 0 !important;
+}
+
+.ad-table-card,
+.ad-chart-card {
+  border-radius: 14px !important;
+  border: 1.5px solid #c8ede3 !important;
+  box-shadow: 0 2px 10px rgba(8, 80, 65, 0.07) !important;
+  height: 100%;
+}
+
+.ad-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #085041;
+}
+
+.ad-table .ant-table-thead > tr > th {
+  background: #f0faf7 !important;
+  color: #085041 !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  border-bottom: 1.5px solid #e1f5ee !important;
+}
+
+.ad-table .ant-table-tbody > tr > td {
+  border-bottom: 1px solid #f0faf7 !important;
+  padding: 11px 16px !important;
+}
+
+.ad-table .ant-table-tbody > tr:hover > td {
+  background: #f0faf7 !important;
+}
+
+.ad-user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #085041;
+}
+
+.ad-user-email {
+  font-size: 12px;
+  color: #7ab5a5;
+}
+
+.ad-role-tag {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  padding: 2px 10px !important;
+  border-radius: 20px !important;
+  border: none !important;
+}
+
+.ad-role-doctor  { background: #e1f5ee !important; color: #1d9e75 !important; }
+.ad-role-patient { background: #e8f0fb !important; color: #1a6bb5 !important; }
+.ad-role-admin   { background: #fff0f0 !important; color: #dc2626 !important; }
+
+.ad-delete-btn {
+  border-radius: 8px !important;
+  border: 1.5px solid #fecaca !important;
+  color: #dc2626 !important;
+  background: #fff0f0 !important;
+  height: 30px !important;
+  width: 30px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+}
+
+.ad-delete-btn:hover {
+  background: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+.ad-chart-wrap {
+  padding: 8px 0;
+}
+
+.ad-modal .ant-modal-content {
+  border-radius: 16px !important;
+  overflow: hidden;
+}
+
+.ad-modal .ant-modal-header {
+  background: linear-gradient(135deg, #f0faf7, #e1f5ee) !important;
+  border-bottom: 1.5px solid #c8ede3 !important;
+  padding: 18px 24px !important;
+}
+
+.ad-modal .ant-modal-title {
+  color: #085041 !important;
+  font-weight: 700 !important;
+}
+
+.ad-modal-submit {
+  background: linear-gradient(135deg, #1d9e75, #085041) !important;
+  border: none !important;
+  height: 40px !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  color: #ffffff !important;
+  margin-top: 4px;
+}

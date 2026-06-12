@@ -1,0 +1,696 @@
+.consultations-container {
+  padding: 24px;
+  background-color: #f9f9f9;
+  min-height: 85vh;
+}
+
+.consultations-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.consultations-header {
+  background: #ffffff;
+  padding: 20px 24px;
+  border-radius: 14px;
+  border: 1px solid #e1f5ee;
+  box-shadow: 0 2px 8px rgba(15, 110, 86, 0.05);
+}
+
+.consult-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #085041;
+  margin: 0 0 4px;
+}
+
+.consult-subtitle {
+  color: #7ab5a5;
+  margin: 0;
+  font-size: 13px;
+}
+
+.tabs-card-wrapper {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0f0f0;
+}
+
+.consultation-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.consultation-card {
+  background: #ffffff;
+  border: 1.5px solid #e1f5ee;
+  border-radius: 14px;
+  padding: 18px;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.consultation-card:hover {
+  box-shadow: 0 4px 16px rgba(15, 110, 86, 0.1);
+  border-color: #a8e6ce;
+  transform: translateY(-2px);
+}
+
+.card-top-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.patient-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.patient-initials {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #1d9e75, #5dcaa5);
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.inactive-initials {
+  background: linear-gradient(135deg, #8fa09b, #b4b2a9);
+}
+
+.meta-details h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #085041;
+}
+
+.meta-details p {
+  margin: 0;
+  font-size: 12px;
+  color: #7ab5a5;
+}
+
+.session-mid-details {
+  background: #f0faf7;
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  color: #3d7a68;
+  border: 1px solid #e1f5ee;
+}
+
+.session-mid-details p {
+  margin: 3px 0;
+}
+
+.card-action-bar {
+  display: flex;
+  gap: 10px;
+}
+
+.card-action-bar .ant-btn {
+  flex: 1;
+  border-radius: 8px;
+}
+
+.fee-doctor {
+  color: #16a34a;
+  font-weight: 600;
+}
+.fee-admin {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  height: 540px;
+  background: #f0faf7;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.chat-window-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #085041, #1d9e75);
+  flex-shrink: 0;
+}
+
+.chat-patient-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-patient-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.chat-patient-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.chat-patient-id {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.chat-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-complete-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(74, 222, 128, 0.6);
+  background: rgba(74, 222, 128, 0.15);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.chat-complete-btn:hover {
+  background: rgba(74, 222, 128, 0.3);
+}
+
+.chat-rx-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.chat-rx-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.chat-completed-badge {
+  font-size: 11px;
+  background: rgba(74, 222, 128, 0.2);
+  border: 1px solid rgba(74, 222, 128, 0.5);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.chat-messages-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f0faf7;
+}
+
+.chat-system-msg {
+  align-self: center;
+  font-size: 11px;
+  color: #7ab5a5;
+  background: #ffffff;
+  border: 1px solid #e1f5ee;
+  border-radius: 20px;
+  padding: 4px 12px;
+  text-align: center;
+}
+
+.chat-system-msg--alert {
+  background: #fff4e8;
+  border-color: #fcd9a0;
+  color: #92400e;
+  font-weight: 500;
+}
+
+.msg-row {
+  display: flex;
+  width: 100%;
+}
+
+.msg-patient-row {
+  justify-content: flex-start;
+}
+
+.msg-doctor-row {
+  justify-content: flex-end;
+}
+
+.msg-content-col {
+  display: flex;
+  flex-direction: column;
+  max-width: 72%;
+}
+
+.msg-content-col--right {
+  align-items: flex-end;
+}
+
+.msg-content-col--left {
+  align-items: flex-start;
+}
+
+.msg-bubble {
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.msg-patient {
+  background: #ffffff;
+  color: #085041;
+  border-bottom-left-radius: 4px;
+  border: 1px solid #e1f5ee;
+  box-shadow: 0 1px 4px rgba(8, 80, 65, 0.06);
+}
+
+.msg-doctor {
+  background: linear-gradient(135deg, #1d9e75, #085041);
+  color: #ffffff;
+  border-bottom-right-radius: 4px;
+}
+
+.msg-time {
+  font-size: 10px;
+  color: #a8d5c4;
+  margin-top: 3px;
+}
+
+.msg-time--right {
+  text-align: right;
+}
+
+.msg-image-wrap {
+  max-width: 200px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 2px;
+}
+
+.msg-image {
+  width: 100%;
+  display: block;
+}
+
+.chat-image-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: #ffffff;
+  border-top: 1px solid #e1f5ee;
+  flex-shrink: 0;
+}
+
+.preview-thumb {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.preview-name {
+  flex: 1;
+  font-size: 12px;
+  color: #6b7280;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preview-clear {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #94a3b8;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.chat-input-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #ffffff;
+  border-top: 1.5px solid #e1f5ee;
+  flex-shrink: 0;
+}
+
+.chat-attach-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid #c8ede3;
+  background: #f0faf7;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f6e56;
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.chat-attach-btn:hover {
+  background: #e1f5ee;
+}
+
+.chat-file-hidden {
+  display: none;
+}
+
+.chat-textarea {
+  flex: 1;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1.5px solid #c8ede3;
+  background: #f0faf7;
+  font-size: 13px;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  min-height: 36px;
+  max-height: 80px;
+  overflow-y: auto;
+  line-height: 1.5;
+  color: #085041;
+  transition: border-color 0.15s;
+}
+
+.chat-textarea:focus {
+  border-color: #1d9e75;
+  background: #ffffff;
+}
+
+.chat-send-btn {
+  border-radius: 50% !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0;
+  padding: 0 !important;
+  background: linear-gradient(135deg, #1d9e75, #085041) !important;
+  border: none !important;
+}
+
+.chat-session-ended {
+  padding: 14px 16px;
+  background: #fff4e8;
+  border-top: 1.5px solid #fcd9a0;
+  color: #92400e;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.rx-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  padding: 1rem;
+}
+
+.rx-modal {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.rx-modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e1f5ee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #085041, #1d9e75);
+}
+
+.rx-modal-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.rx-modal-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  font-size: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rx-modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rx-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.rx-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.rx-label {
+  font-size: 11px;
+  color: #7ab5a5;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.rx-input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #e1f5ee;
+  background: #f7fdfb;
+  color: #085041;
+  font-size: 13px;
+  outline: none;
+  font-family: inherit;
+}
+
+.rx-input:focus {
+  border-color: #1d9e75;
+}
+
+.rx-textarea {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #e1f5ee;
+  background: #f7fdfb;
+  color: #085041;
+  font-size: 13px;
+  outline: none;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.55;
+}
+
+.rx-textarea:focus {
+  border-color: #1d9e75;
+}
+
+.drug-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.drug-input {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1.5px solid #e1f5ee;
+  background: #f7fdfb;
+  color: #085041;
+  font-size: 13px;
+  outline: none;
+  font-family: inherit;
+}
+
+.drug-wide {
+  flex: 2;
+}
+
+.drug-remove {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.drug-add-btn {
+  background: none;
+  border: 1.5px dashed #c8ede3;
+  border-radius: 8px;
+  color: #7ab5a5;
+  font-size: 13px;
+  padding: 8px 12px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  margin-top: 2px;
+}
+
+.rx-send-btn {
+  background: linear-gradient(135deg, #1d9e75, #085041);
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.rx-send-btn:hover {
+  opacity: 0.85;
+}
+
+.rx-card {
+  background: #f0faf7;
+  border: 1.5px solid #c8ede3;
+  border-radius: 12px;
+  padding: 12px 14px;
+  max-width: 80%;
+}
+
+.rx-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #c8ede3;
+}
+
+.rx-card-icon {
+  font-size: 16px;
+}
+.rx-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f6e56;
+  margin: 0;
+}
+.rx-card-meta {
+  font-size: 11px;
+  color: #7ab5a5;
+  margin: 0;
+}
+.rx-card-diagnosis {
+  font-size: 12px;
+  color: #7ab5a5;
+  margin-bottom: 6px;
+}
+.rx-card-drug {
+  font-size: 13px;
+  color: #085041;
+  padding: 3px 0;
+  margin: 0;
+  font-weight: 500;
+}
+.rx-card-notes {
+  font-size: 12px;
+  color: #7ab5a5;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #c8ede3;
+}

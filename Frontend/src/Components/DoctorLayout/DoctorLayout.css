@@ -1,0 +1,22 @@
+.doctor-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f0faf7;
+}
+
+.doctor-main {
+  margin-left: 265px;
+  flex: 1;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 100vh;
+}
+
+.doctor-main.collapsed {
+  margin-left: 72px;
+}
+
+.doctor-content {
+  margin-top: 68px;
+  padding: 28px;
+  min-height: calc(100vh - 68px);
+}

@@ -1,0 +1,332 @@
+.appt-page {
+  padding: 28px 32px;
+  min-height: 100vh;
+  background-color: #f5f6fa;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.appt-page-header {
+  background: #ffffff;
+  padding: 20px 24px;
+  border-radius: 14px;
+  border: 1px solid #e1f5ee;
+  box-shadow: 0 2px 8px rgba(15, 110, 86, 0.05);
+}
+
+.appt-page-title {
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  color: #085041 !important;
+  margin: 0 0 4px !important;
+}
+
+.appt-page-sub {
+  color: #7ab5a5;
+  margin: 0;
+  font-size: 13px;
+}
+
+.stats-row {
+  margin: 0 !important;
+}
+
+.stat-card {
+  border-radius: 14px !important;
+  border: 1px solid #f0f1f5 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+}
+
+.stat-card .ant-card-body {
+  padding: 18px 20px !important;
+}
+
+.stat-card .ant-statistic-title {
+  font-size: 12px !important;
+  color: #7b8a9a !important;
+  font-weight: 500 !important;
+  margin-bottom: 8px !important;
+}
+
+.stat-card .ant-statistic-content-value {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: #1a1a2e !important;
+}
+
+.stat-card .ant-statistic-content-prefix {
+  font-size: 20px !important;
+  margin-right: 10px !important;
+}
+
+.stat-icon-total {
+  color: #1a9e75 !important;
+}
+.stat-icon-pending {
+  color: #e6a817 !important;
+}
+.stat-icon-approved {
+  color: #3b82f6 !important;
+}
+.stat-icon-completed {
+  color: #1a9e75 !important;
+}
+
+.stat-card--total {
+  background: #f0faf6 !important;
+}
+.stat-card--pending {
+  background: #fffdf0 !important;
+}
+.stat-card--approved {
+  background: #f0f6ff !important;
+}
+.stat-card--completed {
+  background: #f0faf6 !important;
+}
+
+.appt-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-chips {
+  gap: 8px !important;
+}
+
+.filter-badge .ant-badge-count {
+  background-color: #e2e8f0 !important;
+  color: #5a6474 !important;
+  box-shadow: none !important;
+  font-size: 10px !important;
+}
+
+.filter-chip {
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1.5px solid #e2e8f0;
+  background: #ffffff;
+  color: #7b8a9a;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.filter-chip:hover {
+  border-color: #1a9e75;
+  color: #1a9e75;
+}
+.filter-chip--active {
+  background: #1a9e75;
+  border-color: #1a9e75;
+  color: #ffffff;
+}
+.filter-chip--active:hover {
+  color: #ffffff;
+}
+
+.appt-search {
+  width: 260px !important;
+  border-radius: 10px !important;
+  border-color: #e2e8f0 !important;
+  background: #ffffff !important;
+}
+
+.search-prefix-icon {
+  color: #adb5c2 !important;
+}
+
+.table-card {
+  border-radius: 16px !important;
+  border: 1px solid #f0f1f5 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+  overflow: hidden !important;
+}
+
+.table-card .ant-card-body {
+  padding: 0 !important;
+}
+.table-card .ant-table {
+  font-size: 13.5px !important;
+}
+
+.table-card .ant-table-thead > tr > th {
+  background: #f8f9fb !important;
+  color: #9aa3b0 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  border-bottom: 1.5px solid #edf0f5 !important;
+  padding: 13px 16px !important;
+}
+
+.table-card .ant-table-tbody > tr > td {
+  padding: 14px 16px !important;
+  border-bottom: 1px solid #f3f4f7 !important;
+  vertical-align: middle !important;
+}
+
+.table-row {
+  cursor: pointer !important;
+  transition: background 0.15s !important;
+}
+.table-card .ant-table-tbody > tr.table-row:hover > td {
+  background: #f8fffe !important;
+}
+
+.patient-avatar {
+  background: linear-gradient(135deg, #1a9e75 0%, #0d6e56 100%) !important;
+  color: #ffffff !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.patient-name {
+  font-weight: 600;
+  color: #1a1a2e;
+  font-size: 13.5px;
+  margin-bottom: 2px;
+}
+.patient-phone {
+  font-size: 11.5px;
+  color: #9aa3b0;
+}
+.cell-muted {
+  color: #5a6474 !important;
+  font-weight: 500 !important;
+}
+
+.type-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  background: #f0f1f5;
+  color: #5a6474;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-tag {
+  border-radius: 99px !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  padding: 2px 12px !important;
+  border: none !important;
+}
+
+.pay-tag {
+  border-radius: 20px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  border: none !important;
+}
+
+.action-btn-approve {
+  background: #e8f5f0 !important;
+  color: #1a9e75 !important;
+  border-color: transparent !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+}
+
+.action-btn-approve:hover {
+  background: #1a9e75 !important;
+  color: #ffffff !important;
+}
+
+.action-btn-reject {
+  background: #fff0f0 !important;
+  border-radius: 8px !important;
+}
+
+.action-btn-chat {
+  background: #e1f5ee !important;
+  color: #1d9e75 !important;
+  border-color: transparent !important;
+  border-radius: 8px !important;
+}
+
+.action-btn-chat:hover {
+  background: #1d9e75 !important;
+  color: #ffffff !important;
+}
+
+.action-btn-delete {
+  background: #fff0f0 !important;
+  border-radius: 8px !important;
+  border-color: transparent !important;
+}
+
+.action-btn-delete:hover {
+  background: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+.popconfirm-approve-btn {
+  background-color: #1a9e75 !important;
+  border-color: #1a9e75 !important;
+}
+
+.btn-submit {
+  background-color: #1a9e75 !important;
+  border-color: #1a9e75 !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+}
+
+.appt-modal .ant-modal-content {
+  border-radius: 18px !important;
+  overflow: hidden !important;
+}
+.appt-modal .ant-modal-header {
+  padding: 20px 24px 16px !important;
+  border-bottom: 1px solid #f3f4f7 !important;
+}
+.appt-modal .ant-modal-title {
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  color: #1a1a2e !important;
+}
+.appt-modal .ant-modal-body {
+  padding: 20px 24px !important;
+}
+.appt-modal .ant-modal-footer {
+  padding: 12px 24px 20px !important;
+  border-top: 1px solid #f3f4f7 !important;
+}
+
+.detail-body {
+  padding-top: 8px;
+}
+.detail-patient-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f3f4f7;
+  margin-bottom: 16px;
+}
+.detail-patient-info {
+  flex: 1;
+}
+.detail-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #adb5c2;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 4px;
+}
+.detail-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a2e;
+}

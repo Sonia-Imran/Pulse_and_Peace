@@ -1,0 +1,38 @@
+.admin-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f8fafc;
+}
+
+.admin-sidebar-panel {
+  width: 270px;
+  min-width: 270px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.admin-main-workspace {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.admin-topbar-panel {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.admin-content-area {
+  flex-grow: 1;
+  width: 100%;
+  padding: 24px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}

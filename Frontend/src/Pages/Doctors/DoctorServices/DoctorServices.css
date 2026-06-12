@@ -1,0 +1,232 @@
+.services-main-container {
+  padding: 24px;
+  min-height: calc(100vh - 68px);
+  background: #f5f6fa;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.page-top-header {
+  background: #ffffff;
+  padding: 20px 24px;
+  border-radius: 14px;
+  border: 1px solid #e1f5ee;
+  box-shadow: 0 2px 8px rgba(15, 110, 86, 0.05);
+}
+
+.services-header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-top-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #085041;
+  margin: 0 0 4px;
+}
+
+.page-top-sub {
+  color: #7ab5a5;
+  margin: 0;
+  font-size: 13px;
+}
+
+.services-add-btn {
+  background-color: #00897b !important;
+  border-color: #00897b !important;
+}
+
+.services-add-btn:hover {
+  background-color: #004d40 !important;
+  border-color: #004d40 !important;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.services-empty {
+  color: #7ab5a5;
+  font-size: 14px;
+  padding: 40px 0;
+  text-align: center;
+  grid-column: 1 / -1;
+}
+
+.service-card-item {
+  border: 1.5px solid #d8f0e8 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 14px rgba(15, 110, 86, 0.04);
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.service-card-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(15, 110, 86, 0.09);
+  border-color: #1d9e75 !important;
+}
+
+.service-banner-frame {
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  position: relative;
+  background: #f0faf7;
+}
+
+.service-display-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.service-badge-overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+}
+
+.service-card-body-content {
+  padding: 16px;
+}
+
+.service-title-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #085041;
+  margin: 0 0 8px 0;
+}
+
+.service-description-para {
+  font-size: 13px;
+  color: #7ab5a5;
+  line-height: 1.4;
+  height: 40px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.service-meta-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.meta-label-block {
+  display: block;
+  font-size: 11px;
+  color: #7ab5a5;
+}
+.meta-label-block.right-align {
+  text-align: right;
+}
+.service-duration-val {
+  color: #085041;
+}
+.service-fee-amount {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1d9e75;
+}
+
+.service-card-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 14px;
+  padding-top: 10px;
+}
+
+.status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.status-badge.pending {
+  background-color: #fffbe6;
+  color: #d46b08;
+  border: 1px solid #ffe58f;
+}
+.status-badge.approved {
+  background-color: #f6ffed;
+  color: #389e0d;
+  border: 1px solid #b7eb8f;
+}
+.status-badge.rejected {
+  background-color: #fff1f0;
+  color: #cf1322;
+  border: 1px solid #ffa39e;
+}
+
+.services-modal-form {
+  margin-top: 16px;
+}
+
+.form-split-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.form-number-input {
+  width: 100%;
+  border-radius: 6px;
+}
+.form-actions-wrapper {
+  text-align: right;
+  margin-bottom: 0;
+  margin-top: 24px;
+}
+.form-cancel-btn {
+  margin-right: 8px;
+}
+.image-upload-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.image-preview-thumb {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1.5px solid #e1f5ee;
+}
+
+.image-upload-label {
+  cursor: pointer;
+}
+
+.image-upload-input {
+  display: none;
+}
+
+.image-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0faf7;
+  border: 1.5px dashed #1d9e75;
+  color: #0f6e56;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.image-upload-btn:hover {
+  background: #e1f5ee;
+}
