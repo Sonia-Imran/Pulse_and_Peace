@@ -8,7 +8,14 @@ const getDoctorProfile = async (req, res) => {
   try {
     const doctor = await Doctor.findOne({ user: req.user._id });
     const user = await User.findById(req.user._id).select("-password");
-    res.json({ success: true, data: { ...user.toObject(), ...doctor?.toObject() } });
+    res.json({
+      success: true,
+      data: {
+        ...user.toObject(),
+        ...doctor?.toObject(),
+        userId: String(req.user._id),
+      },
+    });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -43,7 +50,7 @@ const toggleAvailability = async (req, res) => {
 
 const getDoctorStats = async (req, res) => {
   try {
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toLocaleDateString("en-CA");
     const allBookings = await Booking.find({ doctor: req.user._id });
     const payments = await Payment.find({ doctor: req.user._id, status: "paid" });
     const totalRevenue = payments.reduce((sum, p) => sum + p.amount, 0);
@@ -65,65 +72,64 @@ const getDoctorStats = async (req, res) => {
 
 const getDoctorAppointments = async (req, res) => {
   try {
-    const bookings = await Booking.find({ doctor: req.user._id })
-      .sort({ createdAt: -1 })
-
-    const payments = await Payment.find({ doctor: req.user._id })
+    const bookings = await Booking.find({ doctor: req.user._id }).sort({ createdAt: -1 });
+    const payments = await Payment.find({ doctor: req.user._id });
 
     const result = bookings.map(b => {
-      const pay = payments.find(p => String(p.booking) === String(b._id))
+      const pay = payments.find(p => String(p.booking) === String(b._id));
       return {
-        id:            String(b._id),
-        patient:       b.patientName || 'Patient',
-        patientId:     String(b.patient),
-        phone:         b.phone || 'N/A',
-        type:          b.type,
-        consultType:   b.consultType,
-        date:          b.date,
-        time:          b.time,
-        reason:        b.reason,
-        fee:           b.fee,
-        status:        b.status,
-        paymentStatus: pay?.status === 'paid' ? 'paid' : b.paymentStatus || 'unpaid',
-      }
-    })
+        id: String(b._id),
+        patient: b.patientName || "Patient",
+        patientId: String(b.patient),
+        phone: b.phone || "N/A",
+        type: b.type,
+        consultType: b.consultType,
+        date: b.date,
+        time: b.time,
+        reason: b.reason,
+        fee: b.fee,
+        status: b.status,
+        paymentStatus: pay?.status === "paid" ? "paid" : b.paymentStatus || "unpaid",
+      };
+    });
 
-    res.json({ success: true, data: result })
+    res.json({ success: true, data: result });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message })
+    res.status(500).json({ success: false, message: err.message });
   }
-}
+};
 
 const updateAppointmentStatus = async (req, res) => {
   try {
-    const { status } = req.body
+    const { status } = req.body;
     const booking = await Booking.findOneAndUpdate(
       { _id: req.params.id },
       { status },
       { new: true }
-    )
-    if (!booking) return res.status(404).json({ success: false, message: 'Appointment not found' })
+    );
+    if (!booking) return res.status(404).json({ success: false, message: "Appointment not found" });
 
-    const { io } = require('../server')
-    io.emit('appointment_updated', {
+    const { io } = require("../server");
+    io.emit("appointment_updated", {
       bookingId: String(booking._id),
       status,
       patientId: String(booking.patient),
-    })
+    });
 
     await Notification.create({
       recipient: booking.patient,
-      title:     `Appointment ${status}`,
-      message:   `Your ${booking.type} appointment has been ${status} by the doctor.`,
-      type:      'appointment',
+      title: `Appointment ${status}`,
+      message: `Your ${booking.type} appointment has been ${status} by the doctor.`,
+      type: "appointment",
       relatedId: String(booking._id),
-    })
+    });
 
-    res.json({ success: true, data: booking })
+    res.json({ success: true, data: booking });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message })
+    res.status(500).json({ success: false, message: err.message });
   }
-}
+};
+
 const getDoctorPatients = async (req, res) => {
   try {
     const bookings = await Booking.find({ doctor: req.user._id });

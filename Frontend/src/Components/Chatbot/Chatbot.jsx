@@ -38,7 +38,10 @@ const Chatbot = () => {
   }, [isOpen])
 
   useEffect(() => {
-    const handleOpen = () => setIsOpen(true)
+    const handleOpen = () => {
+      setIsOpen(true)
+      setIsMinimized(false)
+    }
     window.addEventListener('openChatbot', handleOpen)
     return () => window.removeEventListener('openChatbot', handleOpen)
   }, [])
@@ -125,6 +128,7 @@ const Chatbot = () => {
 
   const handleRealDoctor = () => {
     setIsOpen(false)
+    setIsMinimized(false)
     setShowDoctorPrompt(false)
     setBookingOpen(true)
   }

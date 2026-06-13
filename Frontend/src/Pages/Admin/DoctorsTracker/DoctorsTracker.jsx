@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Card, Statistic, Typography, Table, Tag, Space, Rate, message } from 'antd'
-import { UserOutlined, StarOutlined, CalendarOutlined } from '@ant-design/icons'
+import { Row, Col, Card, Statistic, Typography, Table, Tag, Space, Rate, message, Modal, List, Avatar } from 'antd'
+import { UserOutlined, StarOutlined, CalendarOutlined, MessageOutlined } from '@ant-design/icons'
 import API from '../../../api'
 import './DoctorsTracker.css'
 
@@ -9,6 +9,10 @@ const { Text } = Typography
 const DoctorsTracker = () => {
   const [doctorsData, setDoctorsData] = useState([])
   const [globalStats, setGlobalStats] = useState({ totalDoctors: 0, avgPlatformRating: '0.0', totalConsultations: 0 })
+  const [reviewModal, setReviewModal] = useState(false)
+  const [selectedDoctor, setSelectedDoctor] = useState(null)
+  const [reviews, setReviews] = useState([])
+  const [reviewsLoading, setReviewsLoading] = useState(false)
 
   useEffect(() => { loadData() }, [])
 
@@ -19,6 +23,21 @@ const DoctorsTracker = () => {
       setGlobalStats(data.stats || { totalDoctors: 0, avgPlatformRating: '0.0', totalConsultations: 0 })
     } catch {
       message.error('Failed to load doctors data')
+    }
+  }
+
+  const openReviews = async (record) => {
+    setSelectedDoctor(record)
+    setReviewModal(true)
+    setReviewsLoading(true)
+    try {
+      const doctorUserId = record.userId || record.key
+      const { data } = await API.get(`/reviews/doctor/${doctorUserId}`)
+      setReviews(data.data || [])
+    } catch {
+      setReviews([])
+    } finally {
+      setReviewsLoading(false)
     }
   }
 
@@ -38,14 +57,30 @@ const DoctorsTracker = () => {
     {
       title: 'Rating',
       dataIndex: 'rating',
-      render: rating => (
+      render: (rating, record) => (
         <Space direction="vertical" size={0}>
           <Rate disabled allowHalf value={rating} className="dt-rate" />
-          <Text className="dt-rating-val">{rating > 0 ? `${Number(rating).toFixed(1)} / 5` : 'No reviews yet'}</Text>
+          <Text className="dt-rating-val">
+            {rating > 0 ? `${Number(rating).toFixed(1)} / 5` : 'No reviews yet'}
+            {record.totalReviews > 0 && ` (${record.totalReviews})`}
+          </Text>
         </Space>
       ),
     },
     { title: 'Cases', dataIndex: 'casesCount', render: count => <Tag className="dt-cases-tag">{count} Appointments</Tag> },
+    {
+      title: 'Reviews',
+      render: (_, record) => (
+        <Tag
+          icon={<MessageOutlined />}
+          color="blue"
+          style={{ cursor: 'pointer' }}
+          onClick={() => openReviews(record)}
+        >
+          View Reviews
+        </Tag>
+      ),
+    },
   ]
 
   return (
@@ -82,6 +117,40 @@ const DoctorsTracker = () => {
       <Card bordered={false} className="dt-table-card" title={<Text className="dt-card-title">Doctor Performance Tracker</Text>}>
         <Table dataSource={doctorsData} columns={columns} rowKey="key" pagination={{ pageSize: 6 }} size="middle" className="dt-table" />
       </Card>
+
+      <Modal
+        title={`Reviews — Dr. ${selectedDoctor?.name || ''}`}
+        open={reviewModal}
+        onCancel={() => setReviewModal(false)}
+        footer={null}
+        width={560}
+      >
+        {reviews.length === 0 && !reviewsLoading ? (
+          <Text type="secondary">No reviews yet for this doctor.</Text>
+        ) : (
+          <List
+            loading={reviewsLoading}
+            dataSource={reviews}
+            renderItem={r => (
+              <List.Item>
+                <List.Item.Meta
+                  avatar={<Avatar icon={<UserOutlined />} />}
+                  title={
+                    <Space>
+                      <Text strong>{r.patient?.fullName || 'Patient'}</Text>
+                      <Rate disabled value={r.rating} style={{ fontSize: 12 }} />
+                    </Space>
+                  }
+                  description={r.comment || 'No comment'}
+                />
+                <Text type="secondary" style={{ fontSize: 11 }}>
+                  {new Date(r.createdAt).toLocaleDateString('en-PK')}
+                </Text>
+              </List.Item>
+            )}
+          />
+        )}
+      </Modal>
     </div>
   )
 }

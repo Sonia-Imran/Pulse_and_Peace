@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Row, Col, Avatar, Table, Tag, Switch, message, Popconfirm } from 'antd'
+import { Row, Col, Avatar, Table, Tag, Switch, message, Popconfirm, List, Rate, Space } from 'antd'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 import {
   CalendarOutlined, UserOutlined, CheckCircleOutlined, ClockCircleOutlined,
-  ArrowUpOutlined, MedicineBoxOutlined, BankOutlined, DeleteOutlined,
+  ArrowUpOutlined, MedicineBoxOutlined, BankOutlined, DeleteOutlined, StarOutlined,
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import API from '../../../api'
@@ -11,10 +11,11 @@ import './DoctorDashboard.css'
 
 const DoctorDashboard = () => {
   const navigate = useNavigate()
-  const [isAvailable, setIsAvailable]         = useState(true)
+  const [isAvailable, setIsAvailable] = useState(true)
   const [recentAppointments, setRecentAppointments] = useState([])
-  const [chartData, setChartData]             = useState([])
-  const [stats, setStats]                     = useState({
+  const [chartData, setChartData] = useState([])
+  const [myReviews, setMyReviews] = useState([])
+  const [stats, setStats] = useState({
     todayAppointments: 0, totalPatients: 0, completedToday: 0,
     pendingRequests: 0, totalEarnings: 0, doctorShare: 0,
   })
@@ -25,99 +26,67 @@ const DoctorDashboard = () => {
     return () => window.removeEventListener('new-appointment', loadData)
   }, [])
 
-const loadData = async () => {
-  try {
-    const token = localStorage.getItem('doctor-token')
-    if (token) {
-      const [apptRes, earningsRes] = await Promise.all([
+  const loadData = async () => {
+    try {
+      const [apptRes, earningsRes, profileRes] = await Promise.all([
         API.get('/doctor/appointments'),
         API.get('/doctor/earnings'),
+        API.get('/doctor/profile'),
       ])
 
       const appts = apptRes.data.data || []
       const earnStats = earningsRes.data.stats || {}
-      const today = new Date().toISOString().split('T')[0]
+      const doctorUserId = profileRes.data.data?.userId || profileRes.data.data?._id
+      const today = new Date().toLocaleDateString('en-CA')
 
       const counts = { accepted: 0, pending: 0, completed: 0, rejected: 0 }
       appts.forEach(a => { if (a.status in counts) counts[a.status]++ })
 
       setChartData([
-        { name: `Accepted (${counts.accepted})`,   value: counts.accepted,  color: '#1d9e75' },
-        { name: `Pending (${counts.pending})`,     value: counts.pending,   color: '#faad14' },
+        { name: `Accepted (${counts.accepted})`, value: counts.accepted, color: '#1d9e75' },
+        { name: `Pending (${counts.pending})`, value: counts.pending, color: '#faad14' },
         { name: `Completed (${counts.completed})`, value: counts.completed, color: '#52c41a' },
-        { name: `Rejected (${counts.rejected})`,   value: counts.rejected,  color: '#ff4d4f' },
+        { name: `Rejected (${counts.rejected})`, value: counts.rejected, color: '#ff4d4f' },
       ])
 
-      setRecentAppointments(appts.slice(0, 5).map((a, i) => ({
-        ...a,
-        key: a.id || i.toString(),
-      })))
+      setRecentAppointments(appts.slice(0, 5).map((a, i) => ({ ...a, key: a.id || i.toString() })))
 
       setStats({
         todayAppointments: appts.filter(a => a.date === today).length,
-        totalPatients:     [...new Set(appts.map(a => a.patientId || a.patient))].length,
-        completedToday:    appts.filter(a => a.status === 'completed' && a.date === today).length,
-        pendingRequests:   appts.filter(a => a.status === 'pending').length,
-        totalEarnings:     earnStats.totalRevenue  || 0,
-        doctorShare:       earnStats.doctorShare   || 0,
+        totalPatients: [...new Set(appts.map(a => a.patientId || a.patient))].length,
+        completedToday: appts.filter(a => a.status === 'completed' && a.date === today).length,
+        pendingRequests: appts.filter(a => a.status === 'pending').length,
+        totalEarnings: earnStats.totalRevenue || 0,
+        doctorShare: earnStats.doctorShare || 0,
       })
-    } else {
-      // localStorage fallback
-      const appointments = JSON.parse(localStorage.getItem('pp_appointments') || '[]')
-      const payments     = JSON.parse(localStorage.getItem('localPayments')   || '[]')
-      const users        = JSON.parse(localStorage.getItem('localUsers')      || '[]')
-      const patientProf  = JSON.parse(localStorage.getItem('patient_profile') || '{}')
-      const today        = new Date().toISOString().split('T')[0]
 
-      const totalRevenue = payments.filter(p => p.status === 'paid').reduce((s, p) => s + Number(p.amount || 0), 0)
-      const counts = { accepted: 0, pending: 0, completed: 0, rejected: 0 }
-      appointments.forEach(a => { if (a.status in counts) counts[a.status]++ })
-
-      setChartData([
-        { name: `Accepted (${counts.accepted})`,   value: counts.accepted,  color: '#1d9e75' },
-        { name: `Pending (${counts.pending})`,     value: counts.pending,   color: '#faad14' },
-        { name: `Completed (${counts.completed})`, value: counts.completed, color: '#52c41a' },
-        { name: `Rejected (${counts.rejected})`,   value: counts.rejected,  color: '#ff4d4f' },
-      ])
-
-      setRecentAppointments(
-        appointments.slice().reverse().slice(0, 5).map((a, i) => {
-          const user = users.find(u => u._id === a.patientId)
-          return {
-            ...a,
-            key:     a.id || i.toString(),
-            patient: user?.fullName || patientProf?.fullName || a.patient || 'Patient',
-          }
-        })
-      )
-
-      setStats({
-        todayAppointments: appointments.filter(a => a.date === today).length,
-        totalPatients:     [...new Set(appointments.map(a => a.patientId || a.patient))].length,
-        completedToday:    appointments.filter(a => a.status === 'completed' && a.date === today).length,
-        pendingRequests:   appointments.filter(a => a.status === 'pending').length,
-        totalEarnings:     totalRevenue,
-        doctorShare:       Math.round(totalRevenue * 0.9),
-      })
+      if (doctorUserId) {
+        const { data: reviewData } = await API.get(`/reviews/doctor/${doctorUserId}`)
+        setMyReviews(reviewData.data || [])
+      }
+    } catch {
+      message.error('Failed to load dashboard data')
     }
-  } catch (err) {
-    console.error('Dashboard load error:', err)
-    message.error('Failed to load dashboard data')
-  }
-}
-
-  const handleDelete = (id) => {
-    const data    = JSON.parse(localStorage.getItem('pp_appointments') || '[]')
-    const updated = data.filter(a => a.id !== id)
-    localStorage.setItem('pp_appointments', JSON.stringify(updated))
-    message.success('Appointment deleted!')
-    loadData()
-    window.dispatchEvent(new Event('new-appointment'))
   }
 
-  const handleAvailability = (checked) => {
-    setIsAvailable(checked)
-    message.success(checked ? 'You are now Available.' : 'You are now Offline.')
+  const handleDelete = async (id) => {
+    try {
+      await API.put(`/doctor/appointments/${id}/status`, { status: 'rejected' })
+      message.success('Appointment removed!')
+      loadData()
+    } catch {
+      message.error('Failed to remove appointment')
+    }
+  }
+
+  const handleAvailability = async (checked) => {
+    try {
+      await API.put('/doctor/availability')
+      setIsAvailable(checked)
+      message.success(checked ? 'You are now Available.' : 'You are now Offline.')
+    } catch {
+      setIsAvailable(checked)
+    }
   }
 
   const getGreeting = () => {
@@ -128,10 +97,10 @@ const loadData = async () => {
   }
 
   const statsCards = [
-    { title: "Today's Appointments", value: stats.todayAppointments, icon: <CalendarOutlined />, change: `${stats.pendingRequests} pending`,                             color: 'teal'   },
-    { title: 'Total Patients',        value: stats.totalPatients,     icon: <UserOutlined />,    change: 'Unique patients',                                               color: 'blue'   },
-    { title: 'Completed Today',       value: stats.completedToday,    icon: <CheckCircleOutlined />, change: `${stats.todayAppointments - stats.completedToday} remaining`, color: 'green'  },
-    { title: 'Pending Requests',      value: stats.pendingRequests,   icon: <ClockCircleOutlined />, change: 'Needs attention',                                           color: 'orange' },
+    { title: "Today's Appointments", value: stats.todayAppointments, icon: <CalendarOutlined />, change: `${stats.pendingRequests} pending`, color: 'teal' },
+    { title: 'Total Patients', value: stats.totalPatients, icon: <UserOutlined />, change: 'Unique patients', color: 'blue' },
+    { title: 'Completed Today', value: stats.completedToday, icon: <CheckCircleOutlined />, change: `${stats.todayAppointments - stats.completedToday} remaining`, color: 'green' },
+    { title: 'Pending Requests', value: stats.pendingRequests, icon: <ClockCircleOutlined />, change: 'Needs attention', color: 'orange' },
   ]
 
   const columns = [
@@ -147,9 +116,9 @@ const loadData = async () => {
         </div>
       ),
     },
-    { title: 'Date',   dataIndex: 'date',   render: d => <span className="table-text">{d}</span> },
-    { title: 'Time',   dataIndex: 'time',   render: t => <span className="table-time">{t}</span> },
-    { title: 'Type',   dataIndex: 'type',   render: t => <span className="table-type">{t}</span> },
+    { title: 'Date', dataIndex: 'date', render: d => <span className="table-text">{d}</span> },
+    { title: 'Time', dataIndex: 'time', render: t => <span className="table-time">{t}</span> },
+    { title: 'Type', dataIndex: 'type', render: t => <span className="table-type">{t}</span> },
     {
       title: 'Status', dataIndex: 'status',
       render: s => <Tag className={`status-tag status-${s}`}>{s?.charAt(0).toUpperCase() + s?.slice(1)}</Tag>,
@@ -173,11 +142,15 @@ const loadData = async () => {
     return <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={600}>{`${(percent * 100).toFixed(0)}%`}</text>
   }
 
+  const avgRating = myReviews.length
+    ? (myReviews.reduce((s, r) => s + r.rating, 0) / myReviews.length).toFixed(1)
+    : '0.0'
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-welcome">
         <div className="welcome-left">
-          <h2 className="welcome-title">{getGreeting()}, {'Doctor'} 👋</h2>
+          <h2 className="welcome-title">{getGreeting()}, Doctor 👋</h2>
           <p className="welcome-sub">Here's what's happening with your patients today.</p>
         </div>
         <div className="welcome-right">
@@ -234,6 +207,37 @@ const loadData = async () => {
               <span className="card-link" onClick={() => navigate('/doctor/appointments')}>View All</span>
             </div>
             <Table columns={columns} dataSource={recentAppointments} rowKey="key" pagination={false} className="appointments-table" locale={{ emptyText: 'No appointments yet' }} />
+          </div>
+
+          <div className="dashboard-card" style={{ marginTop: 20 }}>
+            <div className="card-header">
+              <h3 className="card-title"><StarOutlined style={{ color: '#faad14', marginRight: 6 }} />Patient Reviews</h3>
+              <span className="card-link">{myReviews.length} total · Avg {avgRating}/5</span>
+            </div>
+            {myReviews.length === 0 ? (
+              <p style={{ color: '#8c8c8c', padding: '12px 0' }}>No reviews yet. Reviews appear after completed consultations.</p>
+            ) : (
+              <List
+                dataSource={myReviews.slice(0, 4)}
+                renderItem={r => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar icon={<UserOutlined />} size={36} />}
+                      title={
+                        <Space>
+                          <span style={{ fontWeight: 600 }}>{r.patient?.fullName || 'Patient'}</span>
+                          <Rate disabled value={r.rating} style={{ fontSize: 12 }} />
+                        </Space>
+                      }
+                      description={r.comment || 'No comment'}
+                    />
+                    <span style={{ fontSize: 11, color: '#8c8c8c' }}>
+                      {new Date(r.createdAt).toLocaleDateString('en-PK')}
+                    </span>
+                  </List.Item>
+                )}
+              />
+            )}
           </div>
         </Col>
 

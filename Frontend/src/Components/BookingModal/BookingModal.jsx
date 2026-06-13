@@ -46,7 +46,15 @@ const BookingModal = ({ open, onClose, preSelectedDoctor, preSelectedService }) 
 
   const handleClose = () => { resetAll(); onClose() }
 
-  const handleTypeSelect = (type) => { setConsultType(type); setCurrentStep(1) }
+  const handleTypeSelect = (type) => {
+    if (type === "ai") {
+      handleClose()
+      setTimeout(() => window.dispatchEvent(new Event("openChatbot")), 200)
+      return
+    }
+    setConsultType(type)
+    setCurrentStep(1)
+  }
 
   const handleNext = () => {
     if (currentStep === 1 && !selectedService) { message.warning("Please select a service"); return }
@@ -57,83 +65,83 @@ const BookingModal = ({ open, onClose, preSelectedDoctor, preSelectedService }) 
     setCurrentStep((prev) => prev + 1)
   }
 
-const handleSubmit = async () => {
-  if (!concern.trim()) { message.warning('Please describe your concern'); return }
-  setLoading(true)
+  const handleSubmit = async () => {
+    if (!concern.trim()) { message.warning('Please describe your concern'); return }
+    setLoading(true)
 
-  try {
-    const token = localStorage.getItem('user-token')
-    const patientProfile = JSON.parse(localStorage.getItem('patient_profile') || '{}')
+    try {
+      const token = localStorage.getItem('user-token')
+      const patientProfile = JSON.parse(localStorage.getItem('patient_profile') || '{}')
 
-    const matchedService   = approvedServices.find(s => s.name === selectedService?.name)
-    const calculatedFee    = matchedService?.fee ? Number(matchedService.fee) : 0
-    const matchedDoctorObj = doctors.find(d => String(d._id) === String(selectedDoctor))
+      const matchedService   = approvedServices.find(s => s.name === selectedService?.name)
+      const calculatedFee    = matchedService?.fee ? Number(matchedService.fee) : 0
+      const matchedDoctorObj = doctors.find(d => String(d._id) === String(selectedDoctor))
 
-    const bookingPayload = {
-      doctorId:    selectedDoctor || null,
-      serviceId:   matchedService?.id || null,
-      type:        selectedService?.name || selectedService,
-      consultType,
-      date:        selectedDate?.format('YYYY-MM-DD'),
-      time:        selectedTime?.format('HH:mm'),
-      reason:      concern,
-      fee:         calculatedFee,
-    }
-
-    let booking
-
-    if (token) {
-      const { data } = await API.post('/booking', bookingPayload)
-      booking = {
-        id:            String(data.data._id),
-        patient:       patientProfile.fullName || 'Patient',
-        patientId:     patientProfile._id,
-        type:          bookingPayload.type,
+      const bookingPayload = {
+        doctorId:    selectedDoctor || null,
+        serviceId:   matchedService?.id || null,
+        type:        selectedService?.name || selectedService,
         consultType,
-        doctorId:      selectedDoctor,
-        doctorName:    matchedDoctorObj?.fullName || '',
-        fee:           calculatedFee,
-        paymentStatus: 'unpaid',
-        date:          bookingPayload.date,
-        time:          bookingPayload.time,
-        reason:        concern,
-        status:        'pending',
+        date:        selectedDate?.format('YYYY-MM-DD'),
+        time:        selectedTime?.format('HH:mm'),
+        reason:      concern,
+        fee:         calculatedFee,
       }
-    } else {
-      booking = {
-        id:            Date.now().toString(),
-        patient:       patientProfile.fullName || 'Patient',
-        patientName:   patientProfile.fullName || 'Patient',
-        patientId:     patientProfile._id,
-        type:          bookingPayload.type,
-        consultType,
-        doctorId:      selectedDoctor,
-        doctorName:    matchedDoctorObj?.fullName || '',
-        fee:           calculatedFee,
-        paymentStatus: 'unpaid',
-        date:          bookingPayload.date,
-        time:          bookingPayload.time,
-        reason:        concern,
-        status:        'pending',
-        createdAt:     new Date().toISOString(),
+
+      let booking
+
+      if (token) {
+        const { data } = await API.post('/booking', bookingPayload)
+        booking = {
+          id:            String(data.data._id),
+          patient:       patientProfile.fullName || 'Patient',
+          patientId:     patientProfile._id,
+          type:          bookingPayload.type,
+          consultType,
+          doctorId:      selectedDoctor,
+          doctorName:    matchedDoctorObj?.fullName || '',
+          fee:           calculatedFee,
+          paymentStatus: 'unpaid',
+          date:          bookingPayload.date,
+          time:          bookingPayload.time,
+          reason:        concern,
+          status:        'pending',
+        }
+      } else {
+        booking = {
+          id:            Date.now().toString(),
+          patient:       patientProfile.fullName || 'Patient',
+          patientName:   patientProfile.fullName || 'Patient',
+          patientId:     patientProfile._id,
+          type:          bookingPayload.type,
+          consultType,
+          doctorId:      selectedDoctor,
+          doctorName:    matchedDoctorObj?.fullName || '',
+          fee:           calculatedFee,
+          paymentStatus: 'unpaid',
+          date:          bookingPayload.date,
+          time:          bookingPayload.time,
+          reason:        concern,
+          status:        'pending',
+          createdAt:     new Date().toISOString(),
+        }
+        const appointments = JSON.parse(localStorage.getItem('pp_appointments') || '[]')
+        appointments.push(booking)
+        localStorage.setItem('pp_appointments', JSON.stringify(appointments))
       }
-      const appointments = JSON.parse(localStorage.getItem('pp_appointments') || '[]')
-      appointments.push(booking)
-      localStorage.setItem('pp_appointments', JSON.stringify(appointments))
+
+      const userBookings = JSON.parse(localStorage.getItem('userBookings') || '[]')
+      userBookings.push(booking)
+      localStorage.setItem('userBookings', JSON.stringify(userBookings))
+
+      window.dispatchEvent(new Event('new-appointment'))
+      setLoading(false)
+      setCurrentStep(3)
+    } catch (err) {
+      message.error(err.response?.data?.message || 'Failed to book. Try again.')
+      setLoading(false)
     }
-
-    const userBookings = JSON.parse(localStorage.getItem('userBookings') || '[]')
-    userBookings.push(booking)
-    localStorage.setItem('userBookings', JSON.stringify(userBookings))
-
-    window.dispatchEvent(new Event('new-appointment'))
-    setLoading(false)
-    setCurrentStep(3)
-  } catch (err) {
-    message.error(err.response?.data?.message || 'Failed to book. Try again.')
-    setLoading(false)
   }
-}
 
   useEffect(() => {
     if (preSelectedDoctor) { setSelectedDoctor(preSelectedDoctor.id); setConsultType("doctor"); setCurrentStep(1) }

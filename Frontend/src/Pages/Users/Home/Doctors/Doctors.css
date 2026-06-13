@@ -138,6 +138,31 @@
   color: #ffffff;
   border-radius: 12px;
 }
+.doctor_rating_row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+
+.doctor_review_btn {
+  background: none;
+  border: 1px solid #1d9e75;
+  color: #1d9e75;
+  border-radius: 20px;
+  padding: 2px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.doctor_review_btn:hover {
+  background: #1d9e75;
+  color: #fff;
+}
 
 
 @media (max-width: 768px) {

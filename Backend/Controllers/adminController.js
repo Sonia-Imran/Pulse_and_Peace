@@ -5,22 +5,16 @@ const Booking = require("../models/Booking");
 const Payment = require("../models/Payment");
 const Review = require("../models/Review");
 const Notification = require("../models/Notification");
-const generateToken = require("../utils/generateToken");
 const sendEmail = require("../utils/sendEmail");
 
 const addDoctor = async (req, res) => {
   try {
     const { fullName, email, phone, password, specialty, education, description, rating } = req.body;
-
-    if (!fullName || !email || !password) {
+    if (!fullName || !email || !password)
       return res.status(400).json({ success: false, message: "fullName, email and password are required" });
-    }
-
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ success: false, message: "Email already registered" });
-
     const user = await User.create({ fullName, email, phone: phone || "", password, role: "doctor" });
-
     await Doctor.create({
       user: user._id,
       fullName,
@@ -32,7 +26,6 @@ const addDoctor = async (req, res) => {
       rating: rating || 0,
       isApproved: true,
     });
-
     try {
       await sendEmail({
         to: email,
@@ -40,7 +33,6 @@ const addDoctor = async (req, res) => {
         html: `<h3>Welcome Dr. ${fullName},</h3><p>Your doctor account has been created by the admin.</p>`,
       });
     } catch {}
-
     res.status(201).json({ success: true, message: `Dr. ${fullName} added successfully` });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -228,6 +220,7 @@ const getAllDoctorStats = async (req, res) => {
           education: profile?.education || "N/A",
           phone: d.phone || "N/A",
           rating: avgRating,
+          totalReviews: reviews.length,
           casesCount: bookings.length,
         };
       })
@@ -285,17 +278,22 @@ const getAllPatientStats = async (req, res) => {
   }
 };
 
+const getAllReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find()
+      .populate("patient", "fullName")
+      .populate("doctor", "fullName")
+      .sort({ createdAt: -1 })
+      .limit(20);
+    res.json({ success: true, data: reviews });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 module.exports = {
-  addDoctor,
-  getAllUsers,
-  deleteUser,
-  toggleUserStatus,
-  getAllServices,
-  updateServiceStatus,
-  getAllAppointments,
-  deleteAppointment,
-  getAllPayments,
-  getDashboardStats,
-  getAllDoctorStats,
-  getAllPatientStats,
+  addDoctor, getAllUsers, deleteUser, toggleUserStatus,
+  getAllServices, updateServiceStatus, getAllAppointments,
+  deleteAppointment, getAllPayments, getDashboardStats,
+  getAllDoctorStats, getAllPatientStats, getAllReviews,
 };

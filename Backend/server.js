@@ -48,7 +48,8 @@ app.use("/api/chat", require("./routes/chatRoutes"));
 app.use("/api/review", require("./routes/reviewRoutes"));
 app.use("/api/notifications", require("./routes/notificationRoutes"));
 app.use("/api/chatbot", require("./routes/chatbotRoutes"));
-app.use('/api/upload', require('./routes/uploadRoutes'))
+app.use('/api/upload', require('./routes/uploadRoutes'));
+app.use("/api/reviews", require("./routes/reviewRoutes"));
 
 app.get("/", (req, res) => {
   res.json({ message: "Pulse & Peace API is running!" });

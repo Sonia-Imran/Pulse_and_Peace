@@ -5,7 +5,7 @@ const {
   getAllServices, updateServiceStatus,
   getAllAppointments, deleteAppointment,
   getAllPayments, getDashboardStats,
-  getAllDoctorStats, getAllPatientStats,
+  getAllDoctorStats, getAllPatientStats,  getAllReviews,
 } = require("../controllers/adminController");
 const { protect, authorizeRoles } = require("../middleware/auth");
 
@@ -25,5 +25,6 @@ router.delete("/appointments/:id", deleteAppointment);
 router.get("/payments", getAllPayments);
 router.get("/doctors/stats", getAllDoctorStats);
 router.get("/patients/stats", getAllPatientStats);
+router.get("/reviews", getAllReviews);
 
 module.exports = router;

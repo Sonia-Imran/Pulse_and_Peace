@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Card, Statistic, Typography, Table, Tag, Button, Popconfirm, message, Modal, Form, Input, Select, Rate } from 'antd'
-import { UserOutlined, TeamOutlined, DeleteOutlined, PlusOutlined, CalendarOutlined, DollarCircleOutlined } from '@ant-design/icons'
+import { Row, Col, Card, Statistic, Typography, Table, Tag, Button, Popconfirm, message, Modal, Form, Input, Select, List, Avatar, Space } from 'antd'
+import { UserOutlined, TeamOutlined, DeleteOutlined, PlusOutlined, CalendarOutlined, DollarCircleOutlined, StarOutlined } from '@ant-design/icons'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts'
+import { Rate } from 'antd'
 import API from '../../../api'
 import './dashboard.css'
 
@@ -12,6 +13,7 @@ const AdminDashboard = () => {
   const [stats, setStats] = useState({ totalProfit: 0, doctors: 0, patients: 0, appointments: 0 })
   const [combinedUsers, setCombinedUsers] = useState([])
   const [chartData, setChartData] = useState([])
+  const [recentReviews, setRecentReviews] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
@@ -20,14 +22,16 @@ const AdminDashboard = () => {
 
   const loadData = async () => {
     try {
-      const [statsRes, usersRes] = await Promise.all([
+      const [statsRes, usersRes, reviewsRes] = await Promise.all([
         API.get('/admin/stats'),
         API.get('/admin/users'),
+        API.get('/admin/reviews'),
       ])
       const s = statsRes.data.data
       setStats(s)
       const users = usersRes.data.data
       setCombinedUsers(users)
+      setRecentReviews(reviewsRes.data.data || [])
       const doctors = users.filter(u => u.role === 'doctor').length
       const patients = users.filter(u => u.role === 'patient').length
       setChartData([
@@ -71,24 +75,14 @@ const AdminDashboard = () => {
       title: 'Name',
       dataIndex: 'fullName',
       render: (text, record) => (
-        <Text className="ad-user-name">
-          {record.role === 'doctor' ? `Dr. ${text}` : text}
-        </Text>
+        <Text className="ad-user-name">{record.role === 'doctor' ? `Dr. ${text}` : text}</Text>
       ),
     },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      render: t => <Text className="ad-user-email">{t}</Text>,
-    },
+    { title: 'Email', dataIndex: 'email', render: t => <Text className="ad-user-email">{t}</Text> },
     {
       title: 'Role',
       dataIndex: 'role',
-      render: role => (
-        <Tag className={`ad-role-tag ad-role-${role}`}>
-          {role?.toUpperCase()}
-        </Tag>
-      ),
+      render: role => <Tag className={`ad-role-tag ad-role-${role}`}>{role?.toUpperCase()}</Tag>,
     },
     {
       title: 'Action',
@@ -158,15 +152,7 @@ const AdminDashboard = () => {
             <div className="ad-chart-wrap">
               <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
-                  <Pie
-                    data={chartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
-                    paddingAngle={4}
-                    dataKey="value"
-                  >
+                  <Pie data={chartData} cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={4} dataKey="value">
                     {chartData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                   </Pie>
                   <Tooltip />
@@ -178,14 +164,45 @@ const AdminDashboard = () => {
         </Col>
       </Row>
 
-      <Modal
-        title="Add New Doctor"
-        open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        footer={null}
-        destroyOnClose
-        className="ad-modal"
+      <Card
+        bordered={false}
+        className="ad-table-card"
+        style={{ marginTop: 16 }}
+        title={
+          <Space>
+            <StarOutlined style={{ color: '#faad14' }} />
+            <Text className="ad-card-title">Recent Patient Reviews</Text>
+          </Space>
+        }
       >
+        {recentReviews.length === 0 ? (
+          <Text type="secondary">No reviews submitted yet.</Text>
+        ) : (
+          <List
+            dataSource={recentReviews.slice(0, 6)}
+            renderItem={r => (
+              <List.Item>
+                <List.Item.Meta
+                  avatar={<Avatar icon={<UserOutlined />} />}
+                  title={
+                    <Space>
+                      <Text strong>{r.patient?.fullName || 'Patient'}</Text>
+                      <Text type="secondary">→ Dr. {r.doctor?.fullName || 'Doctor'}</Text>
+                      <Rate disabled value={r.rating} style={{ fontSize: 12 }} />
+                    </Space>
+                  }
+                  description={r.comment || 'No comment'}
+                />
+                <Text type="secondary" style={{ fontSize: 11 }}>
+                  {new Date(r.createdAt).toLocaleDateString('en-PK')}
+                </Text>
+              </List.Item>
+            )}
+          />
+        )}
+      </Card>
+
+      <Modal title="Add New Doctor" open={isModalOpen} onCancel={() => setIsModalOpen(false)} footer={null} destroyOnClose className="ad-modal">
         <Form form={form} layout="vertical" onFinish={handleAddDoctor}>
           <Form.Item name="fullName" label="Full Name" rules={[{ required: true }]}><Input /></Form.Item>
           <Form.Item name="specialty" label="Specialty" rules={[{ required: true }]}>
@@ -201,11 +218,8 @@ const AdminDashboard = () => {
           <Form.Item name="phone" label="Phone" rules={[{ required: true }]}><Input /></Form.Item>
           <Form.Item name="education" label="Education" rules={[{ required: true }]}><Input placeholder="e.g. MBBS, FCPS" /></Form.Item>
           <Form.Item name="description" label="Description" rules={[{ required: true }]}><Input.TextArea rows={3} /></Form.Item>
-          <Form.Item name="rating" label="Initial Rating"><Rate /></Form.Item>
           <Form.Item name="password" label="Password" rules={[{ required: true }]}><Input.Password /></Form.Item>
-          <Button className="ad-modal-submit" htmlType="submit" loading={loading} block>
-            Save Doctor
-          </Button>
+          <Button className="ad-modal-submit" htmlType="submit" loading={loading} block>Save Doctor</Button>
         </Form>
       </Modal>
     </div>
