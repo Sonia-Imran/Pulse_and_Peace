@@ -35,6 +35,10 @@ function SideBar({ setTabName }) {
 
   const handleLogout = () => {
     localStorage.removeItem('admin-token')
+    localStorage.removeItem('doctor-token')
+    localStorage.removeItem('doctor_profile')
+    localStorage.removeItem('user-token')
+    localStorage.removeItem('patient_profile')
     window.location.href='/login'
   }
 

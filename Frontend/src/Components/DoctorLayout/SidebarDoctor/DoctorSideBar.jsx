@@ -71,6 +71,9 @@ const SideBar = ({ collapsed, setCollapsed }) => {
       onOk() {
         localStorage.removeItem('doctor-token')
         localStorage.removeItem('doctor_profile')
+        localStorage.removeItem('user-token')
+        localStorage.removeItem('patient_profile')
+        localStorage.removeItem('admin-token')
         window.location.href = '/login'
       },
     })

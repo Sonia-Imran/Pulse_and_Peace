@@ -21,6 +21,9 @@ const SignUp = () => {
       })
 
       const user = data.data
+      localStorage.removeItem("admin-token")
+      localStorage.removeItem("doctor-token")
+      localStorage.removeItem("doctor_profile")
       localStorage.setItem("user-token", user.token)
       localStorage.setItem("patient_profile", JSON.stringify({
         _id: user._id,

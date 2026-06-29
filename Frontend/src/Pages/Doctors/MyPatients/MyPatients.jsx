@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Table, Input, Tag, Button, Modal, Descriptions } from 'antd'
+import { Table, Input, Tag, Button, Modal, Descriptions, message } from 'antd'
 import { SearchOutlined, EyeOutlined } from '@ant-design/icons'
+import API from '../../../api'
 import './MyPatients.css'
 
 export default function MyPatients() {
@@ -8,6 +9,7 @@ export default function MyPatients() {
   const [isModalOpen, setIsModalOpen]   = useState(false)
   const [selectedPatient, setSelectedPatient] = useState(null)
   const [patientsData, setPatientsData] = useState([])
+  const [loading, setLoading]           = useState(false)
 
   useEffect(() => {
     loadPatients()
@@ -15,11 +17,28 @@ export default function MyPatients() {
     return () => window.removeEventListener('new-appointment', loadPatients)
   }, [])
 
-  const loadPatients = () => {
+  const loadPatients = async () => {
+    const token = localStorage.getItem('doctor-token')
+
+    if (token) {
+      setLoading(true)
+      try {
+        const { data } = await API.get('/doctor/patients')
+        setPatientsData(data.data || [])
+      } catch (err) {
+        console.error('Load patients error:', err.response?.data)
+        message.error('Failed to load patients')
+        setPatientsData([])
+      } finally {
+        setLoading(false)
+      }
+      return
+    }
+
+    // Fallback for offline/demo mode (no backend session)
     const appointments  = JSON.parse(localStorage.getItem('pp_appointments') || '[]')
     const users         = JSON.parse(localStorage.getItem('localUsers')      || '[]')
     const patientProf   = JSON.parse(localStorage.getItem('patient_profile') || '{}')
-    const payments      = JSON.parse(localStorage.getItem('localPayments')   || '[]')
 
     const accepted = appointments.filter(a => a.status === 'accepted' || a.status === 'completed')
 
@@ -116,6 +135,7 @@ export default function MyPatients() {
             columns={columns}
             dataSource={filteredData}
             rowKey="id"
+            loading={loading}
             pagination={{ pageSize: 5 }}
             locale={{ emptyText: 'No patients found. Patients appear after approved consultations.' }}
           />

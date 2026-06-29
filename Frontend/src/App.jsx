@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import AdminLayout from "./Components/AdminLayout/AdminLayout";
 import Dashboard from "./Pages/Admin/Dashboard/dashboard";
 import SignUp from "./Pages/Auth/SignUp/signup";
@@ -22,26 +22,22 @@ import DoctorEarnings from "./Pages/Doctors/DoctorEarnings/DoctorEarnings";
 import ConsultationChat from "./Pages/Users/ConsultationChat/ConsultationChat";
 import MyAppointments from "./Pages/Users/MyAppointments/MyAppointments";
 
-function App() {
+function AppRoutes() {
+  const location = useLocation();
   const adminToken  = localStorage.getItem('admin-token');
   const userToken   = localStorage.getItem('user-token');
   const DoctorToken = localStorage.getItem('doctor-token');
 
-  useEffect(() => {
-    localStorage.setItem('admin-data', JSON.stringify({
-      name: "Admin", email: "admin@gmail.com",
-      password: "admin123@", role: "admin",
-    }));
-  }, []);
+  const isAdminPath = location.pathname.startsWith('/dashboard') ||
+    location.pathname.startsWith('/DoctorsTracker') ||
+    location.pathname.startsWith('/PatientsTracker') ||
+    location.pathname.startsWith('/AppointmentsTracker') ||
+    location.pathname.startsWith('/ServicesVerification') ||
+    location.pathname.startsWith('/PaymentsTracker');
 
-  useEffect(() => {
-    localStorage.setItem('doctor-data', JSON.stringify({
-      name: "Doctor", email: "doctor@gmail.com",
-      password: "doctor123@", role: "doctor",
-    }));
-  }, []);
+  const isDoctorPath = location.pathname.startsWith('/doctor');
 
-  if (adminToken) {
+  if (adminToken && isAdminPath) {
     return (
       <AdminLayout>
         <Routes>
@@ -57,7 +53,7 @@ function App() {
     );
   }
 
-  if (DoctorToken) {
+  if (DoctorToken && isDoctorPath) {
     return (
       <Routes>
         <Route path="/doctor" element={<DoctorLayout />}>
@@ -77,15 +73,33 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/login"                element={!userToken ? <Login />           : <Navigate to="/" replace />} />
-      <Route path="/signup"               element={!userToken ? <SignUp />          : <Navigate to="/" replace />} />
-      <Route path="/"                     element={userToken  ? <Home />            : <Navigate to="/login" replace />} />
-      <Route path="/Profile"              element={userToken  ? <Profile />         : <Navigate to="/login" replace />} />
-      <Route path="/my-appointments"      element={userToken  ? <MyAppointments />  : <Navigate to="/login" replace />} />
-      <Route path="/consultation/:id"     element={userToken  ? <ConsultationChat /> : <Navigate to="/login" replace />} />
-      <Route path="*"                     element={<Navigate to={userToken ? "/" : "/login"} replace />} />
+      <Route path="/login"              element={!userToken ? <Login />            : <Navigate to="/" replace />} />
+      <Route path="/signup"             element={!userToken ? <SignUp />           : <Navigate to="/" replace />} />
+      <Route path="/"                   element={userToken  ? <Home />             : <Navigate to="/login" replace />} />
+      <Route path="/Profile"            element={userToken  ? <Profile />          : <Navigate to="/login" replace />} />
+      <Route path="/my-appointments"    element={userToken  ? <MyAppointments />   : <Navigate to="/login" replace />} />
+      <Route path="/consultation/:id"   element={userToken  ? <ConsultationChat /> : <Navigate to="/login" replace />} />
+      <Route path="*"                   element={<Navigate to={userToken ? "/" : "/login"} replace />} />
     </Routes>
   );
+}
+
+function App() {
+  useEffect(() => {
+    localStorage.setItem('admin-data', JSON.stringify({
+      name: "Admin", email: "admin@gmail.com",
+      password: "admin123@", role: "admin",
+    }));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('doctor-data', JSON.stringify({
+      name: "Doctor", email: "doctor@gmail.com",
+      password: "doctor123@", role: "doctor",
+    }));
+  }, []);
+
+  return <AppRoutes />;
 }
 
 export default App;

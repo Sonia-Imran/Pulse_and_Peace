@@ -591,3 +591,45 @@ nav {
     gap: 4px;
   }
 }
+
+@media screen and (max-width: 480px) {
+  .logo-text h2 {
+    font-size: 18px;
+  }
+  .logoimg {
+    height: 55px;
+  }
+  .notif-dropdown,
+  .appt-dropdown {
+    width: calc(100vw - 24px);
+    right: -10px;
+    left: auto;
+  }
+  .profile-trigger .user-name-text {
+    display: none;
+  }
+  .notif-btn,
+  .appt-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .header-right {
+    gap: 3px;
+  }
+  .nav-link {
+    width: 100vw;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .nav-link li a {
+    font-size: 0.95rem;
+    padding: 0.6rem 0.7rem;
+  }
+  .logo-text h2 {
+    font-size: 22px;
+  }
+  .logoimg {
+    height: 65px;
+  }
+}

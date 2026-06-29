@@ -3,12 +3,14 @@ import { Form, Input, Button, Card, Space, Divider } from "antd"
 import { UserOutlined, LockOutlined } from "@ant-design/icons"
 import { useNavigate } from "react-router-dom"
 import API from "../../../api"
+import WelcomeLoader from "../../../Components/WelcomeLoader/WelcomeLoader"
 import "./login.css"
 
 const Login = () => {
   const [form] = Form.useForm()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+  const [welcome, setWelcome] = useState(null) // { name, role, redirectTo }
 
   const onFinish = async (values) => {
     setLoading(true)
@@ -20,9 +22,19 @@ const Login = () => {
 
       const user = data.data
 
+      // Clear any leftover tokens/profiles from other roles so a previous
+      // patient/doctor/admin session on this browser can never bleed into
+      // the new session (this was causing appointments to appear under
+      // the wrong / every doctor account).
+      localStorage.removeItem("admin-token")
+      localStorage.removeItem("doctor-token")
+      localStorage.removeItem("doctor_profile")
+      localStorage.removeItem("user-token")
+      localStorage.removeItem("patient_profile")
+
       if (user.role === "admin") {
         localStorage.setItem("admin-token", user.token)
-        window.location.href = "/dashboard"
+        setWelcome({ name: user.fullName, role: "admin", redirectTo: "/dashboard" })
 
       } else if (user.role === "doctor") {
         localStorage.setItem("doctor-token", user.token)
@@ -34,7 +46,7 @@ const Login = () => {
           phone: user.phone || "",
           role: "doctor",
         }))
-        window.location.href = "/doctor/dashboard"
+        setWelcome({ name: user.fullName, role: "doctor", redirectTo: "/doctor/dashboard" })
 
       } else {
         localStorage.setItem("user-token", user.token)
@@ -46,7 +58,7 @@ const Login = () => {
           role: "patient",
           profilePic: user.profilePic || "",
         }))
-        window.location.href = "/"
+        setWelcome({ name: user.fullName, role: "patient", redirectTo: "/" })
       }
 
     } catch (err) {
@@ -55,6 +67,16 @@ const Login = () => {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (welcome) {
+    return (
+      <WelcomeLoader
+        name={welcome.name}
+        role={welcome.role}
+        onFinish={() => { window.location.href = welcome.redirectTo }}
+      />
+    )
   }
 
   return (

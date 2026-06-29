@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoMdMenu } from "react-icons/io";
 import { LogIn, UserPlus, User, LogOut, ChevronDown, Bell, Calendar, CheckCircle, Clock, XCircle } from "lucide-react";
+import API from "../../api";
 import "./Header.css";
 
 export default function Header() {
@@ -35,7 +36,7 @@ export default function Header() {
     const interval = setInterval(() => {
       loadNotifications();
       loadAppointments();
-    }, 4000);
+    }, 8000);
     return () => clearInterval(interval);
   }, []);
 
@@ -48,35 +49,61 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const loadNotifications = () => {
-    const appts = JSON.parse(localStorage.getItem("pp_appointments") || "[]");
-    const notifs = appts
-      .filter(a => a.consultType === "doctor")
-      .map(a => ({
-        id:      a.id,
-        title:   a.status === "accepted" ? "Appointment Approved!" : a.status === "rejected" ? "Appointment Rejected" : "Appointment Pending",
-        message: a.status === "accepted"
-          ? `Your ${a.type} appointment on ${a.date} has been approved. Please complete payment.`
-          : a.status === "rejected"
-          ? `Your ${a.type} appointment has been rejected by the doctor.`
-          : `Your ${a.type} appointment request is pending approval.`,
-        status:  a.status,
-        time:    a.date || "",
-        read:    a.notifRead || false,
+  const loadNotifications = async () => {
+    const userToken = localStorage.getItem("user-token");
+    if (!userToken) return;
+    try {
+      const { data } = await API.get("/notifications");
+      const notifs = (data.data || []).map(n => ({
+        id:      n._id,
+        title:   n.title,
+        message: n.message,
+        status:  n.type === "appointment" ? (n.title.includes("Approved") ? "accepted" : n.title.includes("Rejected") ? "rejected" : "pending") : "pending",
+        time:    n.createdAt ? new Date(n.createdAt).toLocaleDateString() : "",
+        read:    n.read || false,
       }));
-    setNotifications(notifs);
+      setNotifications(notifs);
+    } catch {
+      const appts = JSON.parse(localStorage.getItem("pp_appointments") || "[]");
+      const notifs = appts
+        .filter(a => a.consultType === "doctor")
+        .map(a => ({
+          id:      a.id,
+          title:   a.status === "accepted" ? "Appointment Approved!" : a.status === "rejected" ? "Appointment Rejected" : "Appointment Pending",
+          message: a.status === "accepted"
+            ? `Your ${a.type} appointment on ${a.date} has been approved.`
+            : a.status === "rejected"
+            ? `Your ${a.type} appointment has been rejected.`
+            : `Your ${a.type} appointment is pending approval.`,
+          status:  a.status,
+          time:    a.date || "",
+          read:    a.notifRead || false,
+        }));
+      setNotifications(notifs);
+    }
   };
 
-  const loadAppointments = () => {
-    const appts = JSON.parse(localStorage.getItem("pp_appointments") || "[]");
-    setAppointments(appts.filter(a => a.consultType === "doctor"));
+  const loadAppointments = async () => {
+    const userToken = localStorage.getItem("user-token");
+    if (!userToken) return;
+    try {
+      const { data } = await API.get("/patient/appointments");
+      setAppointments((data.data || []).filter(a => a.consultType === "doctor"));
+    } catch {
+      const appts = JSON.parse(localStorage.getItem("pp_appointments") || "[]");
+      setAppointments(appts.filter(a => a.consultType === "doctor"));
+    }
   };
 
-  const markAllRead = () => {
-    const appts = JSON.parse(localStorage.getItem("pp_appointments") || "[]");
-    const updated = appts.map(a => ({ ...a, notifRead: true }));
-    localStorage.setItem("pp_appointments", JSON.stringify(updated));
-    loadNotifications();
+  const markAllRead = async () => {
+    try {
+      await API.put("/notifications/mark-all-read");
+      loadNotifications();
+    } catch {
+      const appts = JSON.parse(localStorage.getItem("pp_appointments") || "[]");
+      localStorage.setItem("pp_appointments", JSON.stringify(appts.map(a => ({ ...a, notifRead: true }))));
+      loadNotifications();
+    }
   };
 
   const unreadCount = notifications.filter(n => !n.read).length;
@@ -84,6 +111,9 @@ export default function Header() {
   const handleLogout = () => {
     localStorage.removeItem("patient_profile");
     localStorage.removeItem("user-token");
+    localStorage.removeItem("doctor-token");
+    localStorage.removeItem("doctor_profile");
+    localStorage.removeItem("admin-token");
     setPatient(null);
     window.location.href = "/login";
   };
@@ -105,12 +135,6 @@ export default function Header() {
     return                              <Clock       size={14} className="notif-status-icon pending"  />;
   };
 
-  const paymentStatus = (appt) => {
-    const payments  = JSON.parse(localStorage.getItem("localPayments") || "[]");
-    const payRecord = payments.find(p => p.appointmentId === appt.id);
-    return payRecord?.status === "paid" || appt.paymentStatus === "Paid" || appt.paymentStatus === "paid" ? "paid" : "unpaid";
-  };
-
   return (
     <>
       <div className="ticker-bar">
@@ -129,11 +153,11 @@ export default function Header() {
             </div>
 
             <ul className={isOpen ? "nav-link active" : "nav-link"}>
-              <li><a href="#home"    className={location.pathname === "/" ? "active" : ""} onClick={(e) => scrollToSection(e, "home")}>Home</a></li>
-              <li><a href="#about"   onClick={(e) => scrollToSection(e, "about")}>About</a></li>
+              <li><a href="#home"     className={location.pathname === "/" ? "active" : ""} onClick={(e) => scrollToSection(e, "home")}>Home</a></li>
+              <li><a href="#about"    onClick={(e) => scrollToSection(e, "about")}>About</a></li>
               <li><a href="#services" onClick={(e) => scrollToSection(e, "services")}>Services</a></li>
-              <li><a href="#doctors" onClick={(e) => scrollToSection(e, "doctors")}>Our Doctors</a></li>
-              <li><a href="#contact" onClick={(e) => scrollToSection(e, "contact")}>Contact</a></li>
+              <li><a href="#doctors"  onClick={(e) => scrollToSection(e, "doctors")}>Our Doctors</a></li>
+              <li><a href="#contact"  onClick={(e) => scrollToSection(e, "contact")}>Contact</a></li>
 
               <li className="auth-item">
                 {patient ? (
@@ -173,9 +197,9 @@ export default function Header() {
                     <div className="appt-wrap" ref={apptRef}>
                       <button className="appt-btn" onClick={() => { setApptOpen(!apptOpen); setNotifOpen(false); }}>
                         <Calendar size={18} />
-                        {appointments.filter(a => a.status === "accepted" && paymentStatus(a) === "unpaid").length > 0 && (
+                        {appointments.filter(a => a.status === "accepted" && a.paymentStatus !== "paid").length > 0 && (
                           <span className="notif-badge pay-badge">
-                            {appointments.filter(a => a.status === "accepted" && paymentStatus(a) === "unpaid").length}
+                            {appointments.filter(a => a.status === "accepted" && a.paymentStatus !== "paid").length}
                           </span>
                         )}
                       </button>
@@ -190,7 +214,7 @@ export default function Header() {
                               <p className="notif-empty">No appointments yet</p>
                             ) : (
                               appointments.map((a, i) => {
-                                const paid = paymentStatus(a);
+                                const paid = a.paymentStatus === "paid";
                                 return (
                                   <div key={i} className="appt-item">
                                     <div className="appt-item-left">
@@ -201,14 +225,14 @@ export default function Header() {
                                           {a.status}
                                         </span>
                                         {a.status === "accepted" && (
-                                          <span className={`appt-pay-tag appt-pay-${paid}`}>
-                                            {paid === "paid" ? "✓ Paid" : "⚡ Pay Now"}
+                                          <span className={`appt-pay-tag appt-pay-${paid ? "paid" : "unpaid"}`}>
+                                            {paid ? "✓ Paid" : "⚡ Pay Now"}
                                           </span>
                                         )}
                                       </div>
                                     </div>
-                                    
-                                    {a.status === "accepted" && paid === "unpaid" && (
+
+                                    {a.status === "accepted" && !paid && (
                                       <button
                                         className="appt-pay-btn"
                                         onClick={() => { setApptOpen(false); navigate("/my-appointments"); }}
@@ -216,8 +240,8 @@ export default function Header() {
                                         Pay
                                       </button>
                                     )}
-                                    
-                                    {paid === "paid" && (
+
+                                    {paid && (
                                       <button
                                         className="appt-chat-btn"
                                         onClick={() => { setApptOpen(false); navigate(`/consultation/${a.id}`); }}
@@ -251,11 +275,9 @@ export default function Header() {
                           <div className="dropdown-item" onClick={() => { setDropdownOpen(false); navigate("/Profile"); }}>
                             <User size={15} /> My Profile
                           </div>
-                          
                           <div className="dropdown-item" onClick={() => { setDropdownOpen(false); navigate("/my-appointments"); }}>
                             <Calendar size={15} /> My Appointments
                           </div>
-                          
                           <div className="dropdown-divider" />
                           <div className="dropdown-item danger" onClick={handleLogout}>
                             <LogOut size={15} /> Logout
